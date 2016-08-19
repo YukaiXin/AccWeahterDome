@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDisplayCityWheater = (TextView) findViewById(R.id.display_weahter);
 
         mbtn = (Button)findViewById(R.id.weather);
+        mbtn.setOnClickListener(this);
 
     }
 
@@ -91,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             HttpURLConnection urlConnection = null;
 
             try {
-
                 url = new URL(urls[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream in = urlConnection.getInputStream();
@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     result += current;
                     data = reader.read();
                 }
-
                 return result;
             }
             catch (Exception e) {
@@ -127,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
 
-
                 try {
                     DownloadTask weather = new DownloadTask();
                     j2 = weather.execute("http://apidev.accuweather.com/currentconditions/v1/"+ key + ".json?language=en&apikey=c272988005344bafb66feba23e8b306e").get();
@@ -137,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         JSONObject weatherPart = weatherArray.getJSONObject(i);
                         mDisplayCityWheater.setText(weatherPart.toString());
-
                     }
 
                 } catch (InterruptedException e) {
