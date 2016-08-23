@@ -69,7 +69,7 @@ public class WeatherActivity extends Activity {
         criteria.setPowerRequirement(Criteria.POWER_LOW); // 低功耗
 
         String provider = locationManager.getBestProvider(criteria, true); // 获取GPS信息
-        Log.i("kxyu_gps","provider :  "+provider);
+        Log.i("kxyu_gps","provider :  "+provider +"  provider ： "+locationManager.getAllProviders());
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.i("kxyu_gps","Permission ");
             return;
@@ -77,8 +77,8 @@ public class WeatherActivity extends Activity {
         Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER); // 通过GPS获取位置
         updateToNewLocation(location);
 //        // 设置监听器，自动更新的最小时间为间隔N秒(1秒为1*1000，这样写主要为了方便)或最小位移变化超过N米
-//        locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 1 * 1000, 5,
-//                locationListener);
+        locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 1 * 1000, 5,
+                locationListener);
     }
 
     private void updateToNewLocation(Location location) {
