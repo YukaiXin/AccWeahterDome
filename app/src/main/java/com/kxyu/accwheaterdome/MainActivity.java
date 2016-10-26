@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.kxyu.accwheaterdome.weather.WeatherActivity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -123,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     JSONObject jsonPart = arr.getJSONObject(i);
                     key = jsonPart.getString("Key");
-
                 }
 
                 try {
@@ -132,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     JSONArray weatherArray = new JSONArray(j2);
                     for (int i = 0; i<arr.length(); i++){
-
                         JSONObject weatherPart = weatherArray.getJSONObject(i);
                         mDisplayCityWheater.setText(weatherPart.toString());
                     }

@@ -3,10 +3,9 @@ package com.kxyu.accwheaterdome.entry;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by lewa on 16-8-16.
+ * Created by kxyu on 16-8-16.
  */
 public class LocationInfo {
-
 
 
 

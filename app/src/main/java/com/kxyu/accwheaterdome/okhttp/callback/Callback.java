@@ -1,5 +1,7 @@
 package com.kxyu.accwheaterdome.okhttp.callback;
 
+import org.json.JSONException;
+
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -54,7 +56,7 @@ public abstract class Callback<T>
 
     public abstract void onError(Call call, Exception e, int id);
 
-    public abstract void onResponse(T response, int id);
+    public abstract void onResponse(T response, int id) throws JSONException;
 
 
     public static Callback CALLBACK_DEFAULT = new Callback()

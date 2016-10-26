@@ -8,7 +8,7 @@ import com.kxyu.accwheaterdome.okhttp.callback.StringCallback;
  */
 public class HttpClientUtil {
     private static final String XSCREEN_URL = "http://dataservice.accuweather.com/locations/v1/countries/ASI?apikey=9O04J0PS9qtx6vAuGvXOgOFFmMd4ybQJ";
-    private static final String LIST_URL = "102";
+
     private static final String CONTENT_TYPE = "application/json";
 
 
