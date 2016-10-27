@@ -130,7 +130,7 @@ public class WeatherShow extends RelativeLayout{
 //                String txt = FileUtils.readFile(getContext(), WEATHER_FILE_TWO);
 //                if (!TextUtils.isEmpty(txt)) {
 //                    weatherData = gson.fromJson(txt.trim(), WeatherData.class);
-                   initWeatherItemView();
+//                   initWeatherItemView();
 //                }
             }
 
