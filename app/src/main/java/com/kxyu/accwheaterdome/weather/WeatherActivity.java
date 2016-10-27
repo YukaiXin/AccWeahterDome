@@ -15,8 +15,9 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.fastaccess.permission.base.PermissionHelper;
@@ -26,27 +27,31 @@ import com.kxyu.accwheaterdome.R;
 /**
  * Created by kxyu on 16-8-16.
  */
-public class WeatherActivity extends Activity implements OnPermissionCallback {
+public class WeatherActivity extends AppCompatActivity implements OnPermissionCallback {
 
     final String TAG = "kxyu_GPS";
+
+
+    WeatherShow weatherShow;
     private PermissionHelper mPermissionHelper;
     private final static String[] MULTI_PERMISSIONS = new String[]{
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION};
 
-    TextView LocationName;
     LocationManager locationManager;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.weather_layout);
+        setContentView(R.layout.weather_activity);
         initViewAndData();
     }
 
     private void initViewAndData(){
+
+        weatherShow = (WeatherShow) findViewById(R.id.weather_layout);
+        weatherShow.setVisibility(View.VISIBLE);
         checkPermissions();
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        LocationName = (TextView) findViewById(R.id.location_name);
         openGPSSettings();
         getLocation();
     }
@@ -90,15 +95,16 @@ public class WeatherActivity extends Activity implements OnPermissionCallback {
                 locationListener);
     }
 
-    private void updateToNewLocation(Location location) {
 
-        if (location != null) {
-            double  latitude = location.getLatitude();
-            double longitude= location.getLongitude();
-            LocationName.setText("L : "+String.valueOf(latitude)+"\n"+"H : "+String.valueOf(longitude));
-        } else {
-            LocationName.setText("无法获取地理信息");
-        }
+    private void updateToNewLocation(Location location) {
+        weatherShow.loadWheaterCard(location);
+//        if (location != null) {
+//            double  latitude = location.getLatitude();
+//            double longitude= location.getLongitude();
+//            LocationName.setText("L : "+String.valueOf(latitude)+"\n"+"H : "+String.valueOf(longitude));
+//        } else {
+//            LocationName.setText("无法获取地理信息");
+//        }
     }
 
     private LocationListener locationListener = new LocationListener() {
@@ -194,4 +200,5 @@ public class WeatherActivity extends Activity implements OnPermissionCallback {
     public void onNoPermissionNeeded() {
 
     }
+
 }

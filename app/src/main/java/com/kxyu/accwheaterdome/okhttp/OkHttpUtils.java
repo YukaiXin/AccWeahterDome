@@ -10,6 +10,8 @@ import com.kxyu.accwheaterdome.okhttp.callback.Callback;
 import com.kxyu.accwheaterdome.okhttp.request.RequestCall;
 import com.kxyu.accwheaterdome.okhttp.utils.Platform;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.concurrent.Executor;
 
@@ -147,7 +149,11 @@ public class OkHttpUtils {
         mPlatform.execute(new Runnable() {
             @Override
             public void run() {
-                callback.onResponse(object, id);
+                try {
+                    callback.onResponse(object, id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 callback.onAfter(id);
             }
         });

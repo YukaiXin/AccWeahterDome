@@ -1,4 +1,4 @@
-package com.kxyu.accwheaterdome;
+package com.kxyu.accwheaterdome.utils;
 
 import com.kxyu.accwheaterdome.okhttp.OkHttpUtils;
 import com.kxyu.accwheaterdome.okhttp.callback.StringCallback;
@@ -23,5 +23,8 @@ public class HttpClientUtil {
                 .content(jsonString)
                 .build()
                 .execute(callback);
+    }
+    public static void useOkHttpGet(String Url, StringCallback callback) {
+        OkHttpUtils.get().url(Url).build().execute(callback);
     }
 }
