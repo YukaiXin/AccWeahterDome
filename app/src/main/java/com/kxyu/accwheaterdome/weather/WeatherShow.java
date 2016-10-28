@@ -3,6 +3,8 @@ package com.kxyu.accwheaterdome.weather;
 import android.content.Context;
 import android.content.res.Resources;
 import android.location.Location;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -28,6 +30,7 @@ import okhttp3.Call;
  */
 public class WeatherShow extends RelativeLayout{
 
+    public final static int ININT_WEATHER = 1;
 
     View mView;
     WeatherData weatherData;
@@ -36,12 +39,12 @@ public class WeatherShow extends RelativeLayout{
     String apiKey = "c272988005344bafb66feba23e8b306e";
     Context mContext;
 
+    public Handler mHandler;
 
     ImageView mWeatherIcon;
     TextView  mLocationName;
     RelativeLayout relativeLayout;
     TextView  mWeatherText;
-    public static Location mLocation = null;
 
     public WeatherShow(Context context) {
         super(context, null);
@@ -54,7 +57,6 @@ public class WeatherShow extends RelativeLayout{
     public WeatherShow(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, 0, 0);
     }
-
 
     public WeatherShow(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -69,6 +71,18 @@ public class WeatherShow extends RelativeLayout{
         relativeLayout.setBackgroundResource(R.mipmap.shanghai);
         mWeatherIcon = (ImageView) mView.findViewById(R.id.weather_icon);
         mLocationName = (TextView) mView.findViewById(R.id.location_name);
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case ININT_WEATHER:
+                        initWeatherItemView();
+                        break;
+                }
+            }
+        };
+
         return mView;
     }
 
@@ -90,32 +104,14 @@ public class WeatherShow extends RelativeLayout{
 
     private void initWeatherItemView() {
 
-
-
-     //   double value = Double.valueOf(weatherData.temperature.metric.Value);
-
-//        mTemperature.setText(Math.round(value) + "℃");
-//        mHumidity.setText(weatherData.RelativeHumidity + "%");
-//        mWeatherText.setText(weatherData.WeatherText);
-//        mDewPoint.setText(weatherData.dewPoint.metric.Value + "℃");
-//        mPressure.setText(weatherData.pressure.metric.Value + "mb");
-//        Log.i("kxyu_weather", "id : " + weatherData.WeatherIcon + "   " + LocationName);
         if (TextUtils.isEmpty(LocationName)) {
             LocationName = "Delhi";
         }
         mLocationName.setText(LocationName);
         final String packageName = mContext.getPackageName();
-//        Log.d("shunli", "packageName --> " + packageName);
-//        int imageResId = Constant.weatherId.get(weatherData.WeatherIcon);
         Resources resources = mContext.getResources();
         int  imageID = resources.getIdentifier("weather_" + weatherData.WeatherIcon, "mipmap", packageName);
         mWeatherIcon.setImageResource(imageID);
-//        if (imageResId > 0) {
-//            mWeatherIcon.setImageResource(imageResId);
-//        } else {
-//            mWeatherIcon.setImageResource(Constant.weatherId.get(1));
-//        }
-//        mWeatherItem.setOnClickListener(this);
     }
 
 
@@ -158,7 +154,8 @@ public class WeatherShow extends RelativeLayout{
                         Log.i("kxyu_weather","success "+e);
                     }
 //                    FileUtils.writeFile(getContext(), WEATHER_FILE_TWO, response, true);
-                    initWeatherItemView();
+                    mHandler.sendEmptyMessage(ININT_WEATHER);
+
                 }
 
             }
