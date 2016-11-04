@@ -114,7 +114,7 @@ public class WeatherShow extends RelativeLayout implements View.OnClickListener{
         if (location != null) {
             String Lo = String.valueOf(location.getLongitude());
             String La = String.valueOf(location.getLatitude());
-            URL = "http://apidev.accuweather.com/locations/v1/cities/geoposition/search?q=" + La + "," + Lo + "&apikey=" + apiKey;
+            URL = "http://apidev.accuweather.com/locations/v1/cities/geoposition/search?q=" + La + "," + Lo + "&apikey=" + apiKey+"&language=zh";
             getWeather(URL, true);
         } else {
             getWeather(URL, false);
@@ -169,7 +169,7 @@ public class WeatherShow extends RelativeLayout implements View.OnClickListener{
                     JSONArray arr = new JSONArray(response);
                     JSONObject jsonPart = arr.getJSONObject(0);
                     Log.i("kxyu_weather", " LocationName : " + LocationName);
-                    LocationName = jsonPart.getString("EnglishName");
+                    LocationName = jsonPart.getString("LocalizedName");
                     key = jsonPart.getString("Key");
                     String url = "http://apidev.accuweather.com/currentconditions/v1/" + key + ".json?language=zh&apikey="+apiKey+"&details=true";
                     getWeather(url, false);
