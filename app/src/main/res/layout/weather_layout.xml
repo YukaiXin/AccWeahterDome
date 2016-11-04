@@ -13,7 +13,6 @@
         android:layout_marginLeft="15dp"
         android:layout_gravity="center"
         android:layout_centerVertical="true"
-        android:background="@mipmap/weather_1"
         />
 
     <LinearLayout
@@ -46,8 +45,7 @@
             android:includeFontPadding="false"
             android:layout_gravity="left"
             android:ellipsize="end"
-            android:text="Sunny"
-            android:textSize="13sp"
+            android:textSize="15sp"
             />
 
         <RelativeLayout
@@ -74,7 +72,6 @@
                 android:includeFontPadding="false"
                 android:lines="1"
                 android:ellipsize="end"
-                android:text="9％"
                 android:layout_marginLeft="3dp"
                 android:textColor="#292929"
                 android:textSize="12sp" />
@@ -98,9 +95,8 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:includeFontPadding="false"
-            android:text="29°"
             android:textColor="#292929"
-            android:textSize="40sp"
+            android:textSize="44sp"
             android:textStyle="normal" />
 
 
@@ -109,12 +105,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:includeFontPadding="false"
-            android:layout_gravity="left"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="20°/25°"
             android:textColor="#282828"
-            android:textSize="13sp"/>
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <ImageView
