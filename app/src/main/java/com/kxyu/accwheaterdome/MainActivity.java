@@ -2,8 +2,6 @@ package com.kxyu.accwheaterdome;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,13 +33,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String j1 = null;
     String j2 = null;
     String key;
-
-    LocationManager locationManager;
-    Location location;
-
-    HttpURLConnection urlConnection = null;
-    String result = "";
-    URL url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

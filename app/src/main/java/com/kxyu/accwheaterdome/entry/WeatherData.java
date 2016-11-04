@@ -3,7 +3,7 @@ package com.kxyu.accwheaterdome.entry;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by kxyu on 16-10-26.
+ * Created by kxyu on 16-8-17.
  */
 public class WeatherData {
 
@@ -22,7 +22,7 @@ public class WeatherData {
     @SerializedName("IsDayTime")
     public String IsDayTime;
 
-   @SerializedName("Temperature")
+    @SerializedName("Temperature")
     public Temperature temperature;
 
     @SerializedName("MobileLink")
@@ -31,11 +31,11 @@ public class WeatherData {
     @SerializedName("RelativeHumidity")
     public String RelativeHumidity;
 
-    @SerializedName("DewPoint")
-    public DewPoint dewPoint;
+    @SerializedName("TemperatureSummary")
+    public TemperatureSummary temperatureSummary;
 
-    @SerializedName("Pressure")
-    public Pressure pressure;
+
+
 
     public class Temperature{
 
@@ -46,48 +46,47 @@ public class WeatherData {
 
             @SerializedName("Value")
             public String Value;
-
-            @SerializedName("Unit")
-            public String Unit;
-
-            @SerializedName("UnitType")
-            public String UnitType;
         }
     }
 
-    public class Pressure{
+    public class TemperatureSummary {
 
-        @SerializedName("Metric")
-        public Metric metric;
+        @SerializedName("Past24HourRange")
+        public Past24HourRange past24HourRange;
 
-        public class  Metric{
+        public class Past24HourRange {
 
-            @SerializedName("Value")
-            public String Value;
+            @SerializedName("Minimum")
+            public Minimum minimum;
 
-            @SerializedName("Unit")
-            public String Unit;
+            public class Minimum {
 
-            @SerializedName("UnitType")
-            public String UnitType;
-        }
-    }
+                @SerializedName("Metric")
+                public Metric metric;
 
-    public class DewPoint{
+                public class Metric {
 
-        @SerializedName("Metric")
-        public Metric metric;
+                    @SerializedName("Value")
+                    public String Value;
+                }
 
-        public class  Metric{
+            }
 
-            @SerializedName("Value")
-            public String Value;
+            @SerializedName("Maximum")
+            public Maximum maximum;
 
-            @SerializedName("Unit")
-            public String Unit;
+            public class Maximum {
 
-            @SerializedName("UnitType")
-            public String UnitType;
+                @SerializedName("Metric")
+                public Metric metric;
+
+                public class Metric {
+
+                    @SerializedName("Value")
+                    public String Value;
+                }
+
+            }
         }
     }
     public String toString() {

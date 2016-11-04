@@ -3,4 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="limegreen">#32CD32</color><!--橙绿色 -->
+    <color name="weather_tc_color">#292929</color>
 </resources>

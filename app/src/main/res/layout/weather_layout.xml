@@ -1,36 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="105dp"
+    android:background="#ccffffff"
     >
 
-<ImageView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@mipmap/black_mask"
-    />
+    <ImageView
+        android:id="@+id/weather_icon"
+        android:layout_marginTop="3dp"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:background="@mipmap/weather_1"
+        />
+
+    <LinearLayout
+        android:layout_toRightOf="@+id/weather_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/weather_location_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:maxWidth="150dp"
+            android:includeFontPadding="false"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/weather_tc_color"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/weather_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#292929"
+            android:includeFontPadding="false"
+            android:layout_gravity="left"
+            android:ellipsize="end"
+            android:text="Sunny"
+            android:textSize="13sp"
+            />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:id="@+id/weather_text_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@mipmap/rain_chance_icon" />
+
+            <TextView
+                android:id="@+id/weather_humidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/weather_text_icon"
+                android:layout_centerVertical="true"
+                android:includeFontPadding="false"
+                android:lines="1"
+                android:ellipsize="end"
+                android:text="9％"
+                android:layout_marginLeft="3dp"
+                android:textColor="#292929"
+                android:textSize="12sp" />
+        </RelativeLayout>
+    </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_height="match_parent"
+        android:paddingRight="19dp"
         android:orientation="vertical"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
         >
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/weather_icon"
-            />
-
         <TextView
+            android:id="@+id/weather_temperature_tv"
+            android:layout_marginTop="9dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/location_name"
-            android:textColor="#FFFFFF"
-            android:text="Shang hai"
-            />
+            android:maxLines="1"
+            android:includeFontPadding="false"
+            android:text="29°"
+            android:textColor="#292929"
+            android:textSize="40sp"
+            android:textStyle="normal" />
 
+
+        <TextView
+            android:id="@+id/weather_HL_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:includeFontPadding="false"
+            android:layout_gravity="left"
+            android:gravity="center"
+            android:text="20°/25°"
+            android:textColor="#282828"
+            android:textSize="13sp"/>
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="3dp"
+        android:layout_marginRight="3dp"
+        android:id="@+id/retry"
+        android:background="@drawable/reflash_card_btn" />
+
 </RelativeLayout>

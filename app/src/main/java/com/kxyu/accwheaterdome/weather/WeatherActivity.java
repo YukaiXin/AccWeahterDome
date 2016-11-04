@@ -2,6 +2,7 @@ package com.kxyu.accwheaterdome.weather;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.fastaccess.permission.base.PermissionHelper;
@@ -31,7 +33,6 @@ public class WeatherActivity extends AppCompatActivity implements OnPermissionCa
 
     final String TAG = "kxyu_GPS";
 
-
     WeatherShow weatherShow;
     private PermissionHelper mPermissionHelper;
     private final static String[] MULTI_PERMISSIONS = new String[]{
@@ -42,7 +43,13 @@ public class WeatherActivity extends AppCompatActivity implements OnPermissionCa
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().setStatusBarColor(0x99000000);
+
+        this.getWindow().setBackgroundDrawable(WallpaperManager.getInstance(this).getDrawable());
+
         setContentView(R.layout.weather_activity);
+
         initViewAndData();
     }
 
@@ -50,6 +57,7 @@ public class WeatherActivity extends AppCompatActivity implements OnPermissionCa
 
         weatherShow = (WeatherShow) findViewById(R.id.weather_layout);
         weatherShow.setVisibility(View.VISIBLE);
+        weatherShow.setWeatherActivity(this);
         checkPermissions();
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         openGPSSettings();
@@ -73,7 +81,7 @@ public class WeatherActivity extends AppCompatActivity implements OnPermissionCa
         }
     }
 
-    private void getLocation() {
+    public void getLocation() {
         // 查找到服务信息
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_LOW); // 设置精度　高　低
@@ -89,15 +97,15 @@ public class WeatherActivity extends AppCompatActivity implements OnPermissionCa
             return;
         }
         Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER); // 通过GPS获取位置
-        updateToNewLocation(location);
+        weatherShow.loadWheaterCard(location);
        // 设置监听器，自动更新的最小时间为间隔N秒(1秒为1*1000，这样写主要为了方便)或最小位移变化超过N米
         locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1 * 1000*600, 5,
                 locationListener);
     }
 
 
-    private void updateToNewLocation(Location location) {
-        weatherShow.loadWheaterCard(location);
+//    private void updateToNewLocation(Location location) {
+//        weatherShow.loadWheaterCard(location);
 //        if (location != null) {
 //            double  latitude = location.getLatitude();
 //            double longitude= location.getLongitude();
@@ -105,14 +113,14 @@ public class WeatherActivity extends AppCompatActivity implements OnPermissionCa
 //        } else {
 //            LocationName.setText("无法获取地理信息");
 //        }
-    }
+//    }
 
     private LocationListener locationListener = new LocationListener() {
         /**
          * 位置信息变化时触发
          */
         public void onLocationChanged(Location location) {
-            updateToNewLocation(location);
+            weatherShow.loadWheaterCard(location);
             Log.i(TAG, "时间：" + location.getTime());
             Log.i(TAG, "经度：" + location.getLongitude());
             Log.i(TAG, "纬度：" + location.getLatitude());
@@ -150,7 +158,7 @@ public class WeatherActivity extends AppCompatActivity implements OnPermissionCa
                 ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 100);
             }
             Location location = locationManager.getLastKnownLocation(provider);
-            updateToNewLocation (location);
+            weatherShow.loadWheaterCard(location);
         }
 
         /**

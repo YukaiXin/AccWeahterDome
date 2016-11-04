@@ -9,6 +9,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,23 +30,29 @@ import okhttp3.Call;
 /**
  * Created by kxyu on 16-10-26.
  */
-public class WeatherShow extends RelativeLayout{
+public class WeatherShow extends RelativeLayout implements View.OnClickListener{
 
     public final static int ININT_WEATHER = 1;
-
+    public final String DEFAULT_CITY = "上海";
+    String apiKey = "c272988005344bafb66feba23e8b306e";
+    public final String DEFAULT_CITY_URL ="http://apidev.accuweather.com/currentconditions/v1/106577.json?language=zh&apikey=" + apiKey + "&details=true";
+    WeatherActivity weatherActivity;
     View mView;
     WeatherData weatherData;
     String key;
     String LocationName = null;
-    String apiKey = "c272988005344bafb66feba23e8b306e";
     Context mContext;
-
+    private TextView mWeatherText;
+    private TextView mTemperature;
+    private TextView mHumidity;
+    private TextView mWeather_Range_temperature;
     public Handler mHandler;
+    private ImageView mRetryBtn;
 
     ImageView mWeatherIcon;
     TextView  mLocationName;
     RelativeLayout relativeLayout;
-    TextView  mWeatherText;
+
 
     public WeatherShow(Context context) {
         super(context, null);
@@ -64,13 +72,25 @@ public class WeatherShow extends RelativeLayout{
         initView(context);
     }
 
+    public void setWeatherActivity(WeatherActivity weatherActivity){
+        this.weatherActivity = weatherActivity;
+    }
+
     private View initView(Context context) {
+
 
         mView = inflate(context, R.layout.weather_layout, this);
         relativeLayout = (RelativeLayout) mView.findViewById(R.id.weather_layout);
-        relativeLayout.setBackgroundResource(R.mipmap.shanghai);
         mWeatherIcon = (ImageView) mView.findViewById(R.id.weather_icon);
-        mLocationName = (TextView) mView.findViewById(R.id.location_name);
+        mLocationName = (TextView) mView.findViewById(R.id.weather_location_tv);
+
+        mTemperature = (TextView) findViewById(R.id.weather_temperature_tv);
+        mWeatherText = (TextView) findViewById(R.id.weather_text);
+        mHumidity = (TextView) findViewById(R.id.weather_humidity);
+        mWeather_Range_temperature = (TextView) findViewById(R.id.weather_HL_temperature);
+        mRetryBtn = (ImageView) findViewById(R.id.retry);
+        mRetryBtn.setOnClickListener(this);
+
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -90,7 +110,7 @@ public class WeatherShow extends RelativeLayout{
     public void loadWheaterCard(Location location) {
         Log.d("weather_debug", "(loadWheaterCard)location = " + location);
 
-        String URL = "http://apidev.accuweather.com/currentconditions/v1/202396.json?language=en&apikey=" + apiKey + "&details=true";
+        String URL = DEFAULT_CITY_URL;
         if (location != null) {
             String Lo = String.valueOf(location.getLongitude());
             String La = String.valueOf(location.getLatitude());
@@ -104,16 +124,31 @@ public class WeatherShow extends RelativeLayout{
 
     private void initWeatherItemView() {
 
-        if (TextUtils.isEmpty(LocationName)) {
-            LocationName = "Delhi";
-        }
-        mLocationName.setText(LocationName);
+
         final String packageName = mContext.getPackageName();
         Resources resources = mContext.getResources();
         int  imageID = resources.getIdentifier("weather_" + weatherData.WeatherIcon, "mipmap", packageName);
         mWeatherIcon.setImageResource(imageID);
-    }
 
+        double value = Double.valueOf(weatherData.temperature.metric.Value);
+
+        mTemperature.setText(Math.round(value) + "°");
+        mHumidity.setText(weatherData.RelativeHumidity + "%");
+        mWeatherText.setText(weatherData.WeatherText);
+
+        double miniValue = Double.valueOf(weatherData.temperatureSummary.past24HourRange.minimum.metric.Value);
+        double maxiValue = Double.valueOf(weatherData.temperatureSummary.past24HourRange.maximum.metric.Value);
+
+        mTemperature.setText(Math.round(value) + "°");
+
+        mWeather_Range_temperature.setText(Math.round(miniValue)+ "°/"+Math.round(maxiValue)+"°");
+        Log.i("kxyu_weather", "id : " + weatherData.WeatherIcon + "   " + LocationName);
+        if (TextUtils.isEmpty(LocationName)) {
+            LocationName = DEFAULT_CITY;
+        }
+        mLocationName.setText(LocationName);
+
+    }
 
     private void getWeather(String url, final boolean req) {
 
@@ -121,13 +156,6 @@ public class WeatherShow extends RelativeLayout{
             @Override
             public void onError(Call call, Exception e, int id) {
                 Log.i("kxyu_weather", "ERROR : "+e);
-//                Gson gson = new Gson();
-//                LocationName = FileUtils.readFile(getContext(), WEATHER_FILE_ONE);
-//                String txt = FileUtils.readFile(getContext(), WEATHER_FILE_TWO);
-//                if (!TextUtils.isEmpty(txt)) {
-//                    weatherData = gson.fromJson(txt.trim(), WeatherData.class);
-//                   initWeatherItemView();
-//                }
             }
 
             @Override
@@ -142,9 +170,8 @@ public class WeatherShow extends RelativeLayout{
                     JSONObject jsonPart = arr.getJSONObject(0);
                     Log.i("kxyu_weather", " LocationName : " + LocationName);
                     LocationName = jsonPart.getString("EnglishName");
-                   // FileUtils.writeFile(getContext(), WEATHER_FILE_ONE, LocationName, true);
                     key = jsonPart.getString("Key");
-                    String url = "http://apidev.accuweather.com/currentconditions/v1/" + key + ".json?language=en&apikey=c272988005344bafb66feba23e8b306e&details=true";
+                    String url = "http://apidev.accuweather.com/currentconditions/v1/" + key + ".json?language=zh&apikey="+apiKey+"&details=true";
                     getWeather(url, false);
                 } else {
                     response = response.substring(1, response.length() - 1);
@@ -153,12 +180,26 @@ public class WeatherShow extends RelativeLayout{
                     } catch (Exception e) {
                         Log.i("kxyu_weather","success "+e);
                     }
-//                    FileUtils.writeFile(getContext(), WEATHER_FILE_TWO, response, true);
                     mHandler.sendEmptyMessage(ININT_WEATHER);
 
                 }
 
             }
         });
+    }
+    private void showRefreshAnimation(Context context, View view) {
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.rotate);
+        animation.setRepeatMode(Animation.RESTART);
+        animation.setRepeatCount(Animation.INFINITE);
+        view.startAnimation(animation);
+    }
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.retry){
+            showRefreshAnimation(mContext, mRetryBtn);
+            if(weatherActivity != null){
+                weatherActivity.getLocation();
+            }
+        }
     }
 }
